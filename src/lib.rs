@@ -34,6 +34,11 @@ impl Rng {
         }
     }
 
+    /// returns the last seed used to initialize the generator
+    pub fn last_seed(&self) -> u64 {
+        self.seed
+    }
+
     /// reseed the generator
     pub fn seed(&mut self, seed: u64) {
         *self = Self::new_seed(seed);
@@ -69,18 +74,19 @@ lazy_static! {
     static ref RAND: Mutex<Rng> = { Mutex::new(Rng::new()) };
 }
 
+/// returns the last seed used to initialize the generator
 pub fn last_seed() -> u64 {
-    RAND.lock().unwrap().seed
+    RAND.lock().unwrap().last_seed()
 }
 /// reseed the generator
 pub fn seed(seed: u64) {
     RAND.lock().unwrap().seed(seed)
 }
-/// returns a random u64
+/// generates a random u64
 pub fn u64() -> u64 {
     RAND.lock().unwrap().u64()
 }
-/// returns a random f64
+/// generates a random f64
 pub fn f64() -> f64 {
     RAND.lock().unwrap().f64()
 }
