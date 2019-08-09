@@ -9,22 +9,36 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 /// Middle Square Weyl Sequence PRNG
 /// In other words it generates random numbers.
-pub struct Generator {
+pub struct RNG {
     x: u64,
     w: u64,
     s: u64,
     seed: u64, // original seed
 }
 
-impl Generator {
-    pub fn new(seed: u64) -> Generator {
-        Generator {
+impl RNG {
+    pub fn new() -> Self {
+        Self::new_seed(
+            SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .unwrap()
+                .as_nanos() as u64,
+        )
+    }
+    pub fn new_seed(seed: u64) -> Self {
+        RNG {
             x: 0,
             w: 0,
             s: (seed << 1).wrapping_add(0xb5ad4eceda1ce2a9),
             seed: seed,
         }
     }
+
+    /// reseed the generator
+    pub fn seed(&mut self, seed: u64) {
+        *self = Self::new_seed(seed);
+    }
+
     /// generates a random u64
     pub fn u64(&mut self) -> u64 {
         self.w = self.w.wrapping_add(self.s);
@@ -52,21 +66,15 @@ impl Generator {
 }
 
 lazy_static! {
-    static ref RAND: Mutex<Generator> = {
-        let seed = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .unwrap()
-            .as_nanos() as u64;
-        Mutex::new(Generator::new(seed))
-    };
+    static ref RAND: Mutex<RNG> = { Mutex::new(RNG::new()) };
 }
 
 pub fn last_seed() -> u64 {
     RAND.lock().unwrap().seed
 }
+/// reseed the generator
 pub fn seed(seed: u64) {
-    let mut rc = RAND.lock().unwrap();
-    *rc = Generator::new(seed);
+    RAND.lock().unwrap().seed(seed)
 }
 /// returns a random u64
 pub fn u64() -> u64 {
