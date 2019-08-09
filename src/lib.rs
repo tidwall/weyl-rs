@@ -9,14 +9,14 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 /// Middle Square Weyl Sequence PRNG
 /// In other words it generates random numbers.
-pub struct RNG {
+pub struct Rng {
     x: u64,
     w: u64,
     s: u64,
     seed: u64, // original seed
 }
 
-impl RNG {
+impl Rng {
     pub fn new() -> Self {
         Self::new_seed(
             SystemTime::now()
@@ -26,7 +26,7 @@ impl RNG {
         )
     }
     pub fn new_seed(seed: u64) -> Self {
-        RNG {
+        Self {
             x: 0,
             w: 0,
             s: (seed << 1).wrapping_add(0xb5ad4eceda1ce2a9),
@@ -66,7 +66,7 @@ impl RNG {
 }
 
 lazy_static! {
-    static ref RAND: Mutex<RNG> = { Mutex::new(RNG::new()) };
+    static ref RAND: Mutex<Rng> = { Mutex::new(Rng::new()) };
 }
 
 pub fn last_seed() -> u64 {
