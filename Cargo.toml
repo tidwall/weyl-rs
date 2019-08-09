@@ -1,0 +1,12 @@
+[package]
+name = "weyl"
+version = "0.1.0"
+authors = ["tidwall <joshbaker77@gmail.com>"]
+edition = "2018"
+license = "ISC"
+repository = "https://github.com/tidwall/weyl-rs"
+description = "Middle Square Weyl Sequence RNG for Rust"
+readme = "README.md"
+
+[dependencies]
+lazy_static = "1.3"
