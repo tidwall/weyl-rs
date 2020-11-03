@@ -1,6 +1,5 @@
 # Middle Square Weyl Sequence RNG for Rust
 
-[![travis](https://img.shields.io/travis/tidwall/weyl-rs.svg)](https://travis-ci.org/tidwall/weyl-rs/)
 [![license](https://img.shields.io/crates/l/weyl.svg)](LICENSE)
 [![version](https://img.shields.io/crates/v/weyl.svg)](https://crates.io/crates/weyl/)
 [![documentation](https://docs.rs/weyl/badge.svg)](https://docs.rs/weyl/)
